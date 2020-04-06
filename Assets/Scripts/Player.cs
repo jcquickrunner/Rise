@@ -40,8 +40,11 @@ bool isAlive = true;
         
 
         myAnimator.SetBool("Run",playerHasHorizontalSpeed);//second parameter looks for true or false-- this animation"run" is true or false
-       
         
+    }
+
+    private void Jump(){
+
     }
     private void FlipSprite()
     { // turn player around
@@ -66,3 +69,4 @@ bool isAlive = true;
 
     // ----------------------------THIS WORKS------------------------}
 }
+adasdasdasdasd
