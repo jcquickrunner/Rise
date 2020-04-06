@@ -13,12 +13,14 @@ bool isAlive = true;
     //------------------------CACHE------------------------------
     Rigidbody2D myRigidBody;
     Animator myAnimator;
+    Collider2D myCollider2D;
     // Start is called before the first frame update
     //--------------------------INITIALIZATION-------------------
     void Start()
     {
         myRigidBody = GetComponent<Rigidbody2D>();//CACHE
         myAnimator = GetComponent<Animator>();
+        myCollider2D = GetComponent<Collider2D>();
     }
     // Update is called once per frame
     void Update()
@@ -34,15 +36,17 @@ bool isAlive = true;
         Vector2 playerVelocity = new Vector2(controlFlow * runSpeed, myRigidBody.velocity.y);// velocity has an x and y
         myRigidBody.velocity = playerVelocity;// sets the velociy for player
         bool playerHasHorizontalSpeed = Mathf.Abs(myRigidBody.velocity.x) > Mathf.Epsilon;// controls set in the input manager in unity
-        print(playerVelocity);
+       
         myAnimator.SetBool("Run",playerHasHorizontalSpeed);//second parameter looks for true or false-- this animation"run" is true or false
         
     }
     private void Jump(){
+        if (!myCollider2D.IsTouchingLayers(LayerMask.GetMask("ground"))) { return;}// if not touching ground layer then run the rest of jump method
         if(CrossPlatformInputManager.GetButtonDown("Jump")){
         Vector2 jumpVelocityToAdd = new Vector2 (0f, jumpSpeed);
         myRigidBody.velocity += jumpVelocityToAdd;// the x and y of velocity to add
         }
+        
     }
     private void FlipSprite()
     { // turn player around
