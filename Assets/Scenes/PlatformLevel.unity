@@ -1924,8 +1924,22 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &319886232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319886226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 163520d5d37d68445b912d143e55d2eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runSpeed: 8
+  jumpSpeed: 20
 --- !u!1 &403549280
 GameObject:
   m_ObjectHideFlags: 0
@@ -1940,7 +1954,7 @@ GameObject:
   - component: {fileID: 403549284}
   - component: {fileID: 403549286}
   - component: {fileID: 403549285}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Foreground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2734,7 +2748,7 @@ PrefabInstance:
     - target: {fileID: 8918068263586816679, guid: f99981205d3f894499d77d19e6c6c7c7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.714
+      value: -3.15
       objectReference: {fileID: 0}
     - target: {fileID: 8918068263586816679, guid: f99981205d3f894499d77d19e6c6c7c7,
         type: 3}
