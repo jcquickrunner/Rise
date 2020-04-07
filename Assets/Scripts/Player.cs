@@ -20,13 +20,18 @@ public class Player : MonoBehaviour
     Rigidbody2D myRigidBody;
     Animator myAnimator;
     Collider2D myCollider2D;
+    float gravityScaleAtStart;// cached a variable at the top thats started at void start so you have acess throughout the code.
+    
+    
     // Start is called before the first frame update
     //--------------------------INITIALIZATION-------------------
     void Start()
     {
+        
         myRigidBody = GetComponent<Rigidbody2D>();//CACHE
         myAnimator = GetComponent<Animator>();
         myCollider2D = GetComponent<Collider2D>();
+        gravityScaleAtStart = myRigidBody.gravityScale;
     }
     // Update is called once per frame
     void Update()
@@ -58,8 +63,9 @@ public class Player : MonoBehaviour
         // currentMethod = MethodController.jump;
         if (currentMethod == MethodController.Running)
         {
-            if (!myCollider2D.IsTouchingLayers(LayerMask.GetMask("ground"))) { return; }// if not touching ground layer then run the rest of jump method
-            if (CrossPlatformInputManager.GetButtonDown("Jump"))
+            if (!myCollider2D.IsTouchingLayers(LayerMask.GetMask("ground"))) { return; }//if this is happening then the rest of the code will work, if not touching
+            // if not touching then the rest of the code will not execute.ground layer then run the rest of jump method
+            if (CrossPlatformInputManager.GetButtonDown("Jump"))//^^ return makes it opposite
             {
                 Vector2 jumpVelocityToAdd = new Vector2(0f, jumpSpeed);
                 myRigidBody.velocity += jumpVelocityToAdd;// the x and y of velocity to add
@@ -75,13 +81,16 @@ public class Player : MonoBehaviour
         currentMethod = MethodController.Climbing;
         if (currentMethod == MethodController.Climbing)
         {
+            
             if (myCollider2D.IsTouchingLayers(LayerMask.GetMask("Ladder"))) //does the opposite actually of what it reads if you put a return after it
             {
+                myRigidBody.gravityScale = 0f;
                 float controlFlow = CrossPlatformInputManager.GetAxis("Vertical");// lets you use both buttons already w and s
                 Vector2 playerClimbVelocity = new Vector2(myRigidBody.velocity.x, controlFlow * ClimbSpeed);
                 myRigidBody.velocity = playerClimbVelocity;
-                bool playerHasverticalSpeed = Mathf.Abs(myRigidBody.velocity.y) > Mathf.Epsilon || myCollider2D.IsTouchingLayers(LayerMask.GetMask("ground"));
+                bool playerHasverticalSpeed = Mathf.Abs(myRigidBody.velocity.y) > Mathf.Epsilon;
                 myAnimator.SetBool("Climb", playerHasverticalSpeed);
+                
                 //  Vector2 climbVelocityToAdd = new Vector2(0f,ClimbSpeed); //x and y climb velocity
                 //  myRigidBody.velocity += climbVelocityToAdd; // add this velocity on x and y
             }
@@ -91,17 +100,21 @@ public class Player : MonoBehaviour
             // }
             else if (myCollider2D.IsTouchingLayers(LayerMask.GetMask("Ladder")))
             {
-                bool playerHasverticalSpeed = Mathf.Abs(myRigidBody.velocity.y) > Mathf.Epsilon || myCollider2D.IsTouchingLayers(LayerMask.GetMask("ground"));
+                bool playerHasverticalSpeed = Mathf.Abs(myRigidBody.velocity.y) > Mathf.Epsilon;
                 myAnimator.SetBool("Climb", playerHasverticalSpeed);
             }
             else if (!myCollider2D.IsTouchingLayers(LayerMask.GetMask("Ladder")))
             {
                 Vector2 velocityWhileClimbing = new Vector2(0f, myRigidBody.velocity.y);
                 myAnimator.SetBool("Climb", false);
+                myRigidBody.gravityScale = gravityScaleAtStart;
+
+            }
+            if (myRigidBody.gravityScale == 0f){
+                myAnimator.SetBool("Climb", true);
             }
 
         }
-
     }
     private void FlipSprite()
     { // turn player around
